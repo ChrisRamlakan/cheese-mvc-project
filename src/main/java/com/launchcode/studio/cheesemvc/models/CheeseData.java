@@ -11,6 +11,10 @@ public class CheeseData {
 
   //CRUD Operations:
 
+  //add - C
+  public static void addCheese(Cheese newCheese){
+    cheeses.put(newCheese.getCheeseID(),newCheese);
+  }
 
 
   //getAll  - R
@@ -19,26 +23,24 @@ public class CheeseData {
     return cheeseList;
   }
 
-  //add - C
-
-  public static void addCheese(Cheese newCheese){
-    cheeses.put(newCheese.getCheeseID(),newCheese);
+  //updateCheese - U
+  //TODO - Add this Method
+  public static void updateCheese(int id, String name, String description){
+    Cheese cheeseToUpdate = CheeseData.getByID(id);
+    cheeseToUpdate.setName(name);
+    cheeseToUpdate.setDescription(description);
+    removeCheese(id);
+    addCheese(cheeseToUpdate);
   }
 
-  //remove - D
 
+  //remove - D
   public static void removeCheese(int id){
-    //Cheese cheeseToRemove = getByID(id);
     cheeses.remove(id);
-    //cheeses.remove(cheeseToRemove);
   }
 
   //getByID - Helper Method
-
   public static Cheese getByID(int id){
     return cheeses.get(id);
   }
-
-
-
 }

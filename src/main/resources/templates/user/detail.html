@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+
+<body class="container">
+<nav th:replace="fragments :: navigation"></nav>
+<table th:if="${user != null}" class ="table">
+  <tr>
+    <td>User Name</td>
+    <td>eMail Address</td>
+    <td>Join Date</td>
+  </tr>
+  <tr>
+    <td th:text="${user.username}"></td>
+    <td th:text="${user.emailAddress}"></td>
+    <td th:text="${user.joinDate}"></td>
+  </tr>
+</table>
+</body>
+</html>

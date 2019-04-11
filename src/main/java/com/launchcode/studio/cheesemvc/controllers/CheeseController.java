@@ -4,12 +4,7 @@ import com.launchcode.studio.cheesemvc.models.Cheese;
 import com.launchcode.studio.cheesemvc.models.CheeseData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.ArrayList;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -19,8 +14,7 @@ public class CheeseController {
   //Request Path: /cheese
   @RequestMapping(value="")
   public String index(Model model){
-    String title = "My Cheeses";
-    model.addAttribute("title", title);
+    model.addAttribute("title"," My Cheeses");
     model.addAttribute("cheeses", CheeseData.getAll());
     return "cheese/index";
   }
@@ -43,6 +37,7 @@ public class CheeseController {
   @RequestMapping(value="add", method = RequestMethod.POST)
   public String addHandler(Model model,
                            @ModelAttribute Cheese newCheese){
+    
     //Check to make sure you aren't adding an empty object to the list (Name is required)
     if(newCheese.getName().isEmpty()){
       model.addAttribute("title","Add Cheese");
@@ -79,7 +74,28 @@ public class CheeseController {
        CheeseData.removeCheese(cheeseID);
      }
     }
-
     return "redirect:";
   }
+  
+  @RequestMapping(value="edit/{cheeseID}", method = RequestMethod.GET)
+  public String displayEditForm(Model model, @PathVariable int cheeseID){
+    Cheese cheeseToEdit = CheeseData.getByID(cheeseID);
+    if(cheeseToEdit == null) {
+      return "redirect:";
+    }
+    model.addAttribute("title"," Edit Cheeses");
+    model.addAttribute("cheese", cheeseToEdit);
+    return "cheese/edit";
+  }
+  
+  @RequestMapping(value="edit", method = RequestMethod.POST)
+  public String processEditForm(Model model,
+                                @RequestParam(name="cheeseID") int cheeseID,
+                                @RequestParam(name="name") String name,
+                                @RequestParam(name="description") String description){
+    System.out.println(cheeseID+ " " + name + " " + description);
+    CheeseData.updateCheese(cheeseID, name, description);
+    return "redirect:";
+  }
+
 }

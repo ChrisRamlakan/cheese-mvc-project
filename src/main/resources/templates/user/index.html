@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+
+<body class="container">
+<div th:if="${user != null}" th:text="${'Welcome ' +user.username +'!'}"></div>
+<nav th:replace="fragments :: navigation"></nav>
+<table th:if="${userList != null}" class ="table">
+  <tr>
+    <td>User Name</td>
+  </tr>
+  <tr th:each="user : ${userList}">
+    <td><a th:href="@{'/user/detail/' + ${user.userID}}" th:text="${user.username}"></a></td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments :: head"></head>
+
+
+<body class="container">
+  <h1 th:text="${title}">Default Title</h1>
+  <nav th:replace="fragments :: navigation"></nav>
+  <h3 th:text="${'Editing CheeseID ' + cheese.cheeseID + ' - ' + cheese.name}"></h3>
+  <form action='/cheese/edit' method='post' style="max-width:600px">
+    <input type="hidden" th:value="${cheese.cheeseID}" name="cheeseID" />
+    <div class="form-group">
+      <label for="name-field">Cheese Name</label>
+      <input class="form-control" id="name-field" type='text' name='name' th:value="${cheese.name}"/>
+    </div>
+    <div class="form-group">
+      <label for="desc-field">Cheese Description</label>
+      <input class="form-control" id="desc-field" type="text" name="description" th:value="${cheese.description}"/>
+    </div>
+    <input type='submit' value='Edit Cheese'/>
+  </form>
+</body>
+</html>
