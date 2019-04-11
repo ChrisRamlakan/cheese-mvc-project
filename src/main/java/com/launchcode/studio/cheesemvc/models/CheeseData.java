@@ -1,38 +1,42 @@
 package com.launchcode.studio.cheesemvc.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CheeseData {
-  private static ArrayList<Cheese> cheeses = new ArrayList<>();
+  //private static ArrayList<Cheese> cheeses = new ArrayList<>();
 
-  //getAll
+  //<CheeseID, Cheese>
+  private static HashMap<Integer, Cheese> cheeses = new HashMap<>();
+
+  //CRUD Operations:
+
+
+
+  //getAll  - R
   public static ArrayList<Cheese> getAll(){
-    return cheeses;
+    ArrayList<Cheese> cheeseList = new ArrayList<>(cheeses.values());
+    return cheeseList;
   }
 
-  //add
+  //add - C
 
   public static void addCheese(Cheese newCheese){
-    cheeses.add(newCheese);
+    cheeses.put(newCheese.getCheeseID(),newCheese);
   }
 
-  //remove
+  //remove - D
 
   public static void removeCheese(int id){
-    Cheese cheeseToRemove = getByID(id);
-    cheeses.remove(cheeseToRemove);
+    //Cheese cheeseToRemove = getByID(id);
+    cheeses.remove(id);
+    //cheeses.remove(cheeseToRemove);
   }
 
-  //getByID
+  //getByID - Helper Method
 
   public static Cheese getByID(int id){
-    Cheese theCheese = null;
-    for(Cheese cheese : cheeses) {
-      if (cheese.getCheeseID() == id) {
-        theCheese = cheese;
-      }
-    }
-    return theCheese;
+    return cheeses.get(id);
   }
 
 
