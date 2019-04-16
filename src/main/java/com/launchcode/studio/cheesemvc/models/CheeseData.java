@@ -24,11 +24,11 @@ public class CheeseData {
   }
 
   //updateCheese - U
-  //TODO - Add this Method
-  public static void updateCheese(int id, String name, String description){
+  public static void updateCheese(int id, String name, String description, CheeseType type){
     Cheese cheeseToUpdate = CheeseData.getByID(id);
     cheeseToUpdate.setName(name);
     cheeseToUpdate.setDescription(description);
+    cheeseToUpdate.setType(type);
     removeCheese(id);
     addCheese(cheeseToUpdate);
   }
