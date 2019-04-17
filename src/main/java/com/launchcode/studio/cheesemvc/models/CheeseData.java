@@ -1,7 +1,9 @@
 package com.launchcode.studio.cheesemvc.models;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CheeseData {
   //private static ArrayList<Cheese> cheeses = new ArrayList<>();
@@ -42,5 +44,16 @@ public class CheeseData {
   //getByID - Helper Method
   public static Cheese getByID(int id){
     return cheeses.get(id);
+  }
+
+  public static Collection<Cheese> getCheeseByCategory(CheeseType cheeseCategory){
+    Collection<Cheese> searchResults = new ArrayList<>();
+    for (Cheese cheese : cheeses.values()){
+      cheese.getType();
+      if(cheese.getType().equals(cheeseCategory)){
+        searchResults.add(cheese);
+      }
+    }
+    return searchResults;
   }
 }

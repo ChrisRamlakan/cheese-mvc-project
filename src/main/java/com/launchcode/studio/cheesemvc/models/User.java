@@ -1,12 +1,27 @@
 package com.launchcode.studio.cheesemvc.models;
 
+import org.hibernate.validator.constraints.Email;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class User {
   private static int nextID=0;
 
   private int userID;
-  private String username, password, emailAddress;
+
+  @NotNull
+  @Size(min=5, max =15, message = "Username must be between 5 and 15 characters long")
+  private String username;
+  @Size(min=1, message = "Password field cannot be blank")
+  private String password;
+
+  @NotNull(message = "The passwords do not match")
+  private String verifyPassword;
+  
+  @Email
+  private String emailAddress;
   private Date joinDate;
 
   public User(){
@@ -19,6 +34,15 @@ public class User {
     this.username = username;
     this.password = password;
     this.emailAddress = emailAddress;
+  }
+
+  //If the passwords don't match, set verifyPassword to null
+  private void checkPassword(){
+    if (this.password != null && this.verifyPassword != null){
+      if(!this.password.equals(this.verifyPassword)){
+        this.verifyPassword=null;
+      }
+    }
   }
 
   public int getUserID() {
@@ -43,6 +67,7 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+    checkPassword();
   }
 
   public String getEmailAddress() {
@@ -59,6 +84,15 @@ public class User {
 
   public void setJoinDate(Date joinDate) {
     this.joinDate = joinDate;
+  }
+
+  public String getVerifyPassword() {
+    return verifyPassword;
+  }
+
+  public void setVerifyPassword(String verifyPassword) {
+    this.verifyPassword = verifyPassword;
+    checkPassword();
   }
 }
 

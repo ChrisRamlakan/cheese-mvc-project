@@ -7,8 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
+import java.util.ArrayList;
 
 
 @Controller
@@ -87,13 +87,38 @@ public class CheeseController {
                                 Errors errors){
 
     if(errors.hasErrors()){
-      model.addAttribute("cheese", CheeseData.getByID(cheeseID));
+      // If the field with errors is name or description, set the initial value of
+      //  the re-rendered form to the last known good value
+      if (errors.hasFieldErrors("name")){
+        cheeseToEdit.setName(CheeseData.getByID(cheeseID).getName());
+      }
+      if (errors.hasFieldErrors("description")){
+        cheeseToEdit.setDescription(CheeseData.getByID(cheeseID).getDescription());
+      }
+      model.addAttribute("cheese", cheeseToEdit);
       model.addAttribute("title"," Edit Cheeses");
       model.addAttribute("cheeseTypes", CheeseType.values());
       return "cheese/edit";
-      //return "redirect:/cheese/edit/" + cheeseID;
     }
     CheeseData.updateCheese(cheeseID, cheeseToEdit.getName(), cheeseToEdit.getDescription(), cheeseToEdit.getType());
     return "redirect:";
+  }
+
+  @RequestMapping(value="search/category", method = RequestMethod.GET)
+  public String displayCategorySearchForm(Model model){
+    model.addAttribute("title", "Search By Category");
+    model.addAttribute("cheeseTypes", CheeseType.values());
+    model.addAttribute(new Cheese());
+    return "/cheese/search";
+  }
+
+  @RequestMapping(value="search/category", method = RequestMethod.POST)
+  public String categorySearchFormHandler(Model model,
+                                          @ModelAttribute Cheese cheese){
+    model.addAttribute("cheeses", CheeseData.getCheeseByCategory(cheese.getType()));
+    model.addAttribute("title", "Search By Category");
+    model.addAttribute("cheeseTypes", CheeseType.values());
+    return "/cheese/search";
+
   }
 }

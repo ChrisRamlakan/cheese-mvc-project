@@ -2,9 +2,11 @@ package com.launchcode.studio.cheesemvc.controllers;
 
 import com.launchcode.studio.cheesemvc.models.User;
 import com.launchcode.studio.cheesemvc.models.UserManager;
+import org.springframework.validation.Errors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("user")
@@ -14,6 +16,7 @@ public class UserController {
   @RequestMapping(value="add", method = RequestMethod.GET)
   public String add(Model model){
     model.addAttribute("title","Create New User");
+    model.addAttribute(new User());
     return "user/add";
   }
 
@@ -33,20 +36,20 @@ public class UserController {
 
   @RequestMapping(value="add", method = RequestMethod.POST)
   public String add(Model model,
-                    @ModelAttribute User user,
+                    @ModelAttribute @Valid User user,
+                    Errors errors,
                     @RequestParam(name="verifyPassword", required = false) String verify){
-    if(user.getPassword().equals(verify)){
-      UserManager.addUser(user);
-      model.addAttribute("title", "User List");
-      model.addAttribute("user", user);
-      model.addAttribute("userList", UserManager.getAll());
-      return "user/index";
+    if(errors.hasErrors()){
+      if(errors.hasErrors()){
+        model.addAttribute("title","Add User");
+        model.addAttribute(user);
+        return "user/add";
+      }
     }
-    else{
-      model.addAttribute("username", user.getUsername());
-      model.addAttribute("emailAddress", user.getEmailAddress());
-      model.addAttribute("errorText", "The passwords don't match");
-      return "user/add";
-    }
+    UserManager.addUser(user);
+    model.addAttribute("title", "User List");
+    model.addAttribute("user", user);
+    model.addAttribute("userList", UserManager.getAll());
+    return "user/index";
   }
 }
