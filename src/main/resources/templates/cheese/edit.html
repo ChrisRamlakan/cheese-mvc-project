@@ -6,10 +6,10 @@
 <body class="container">
   <h1 th:text="${title}">Default Title</h1>
   <nav th:replace="fragments :: navigation"></nav>
-  <h3 th:text="${'Editing CheeseID ' + cheese.cheeseID + ' - ' + cheese.name}"></h3>
+  <h3 th:text="${'Editing id ' + cheese.id + ' - ' + cheese.name}"></h3>
 
   <form action='/cheese/edit' method='post' style="max-width:600px" th:object="${cheese}">
-    <input type="hidden" th:field="*{cheeseID}"/>
+    <input type="hidden" th:field="*{id}"/>
     <div class="form-group">
       <label th:for="name">Cheese Name</label>
       <input class="form-control" th:field="*{name}" th:value="*{name}"/>
@@ -20,12 +20,12 @@
       <input class="form-control" th:field="*{description}" th:value="*{name}"/>
       <span th:errors="*{description}" class="error"></span>
     </div>
-    <div class="form-group">
-      <label th:for="type">Type</label>
-      <select th:field="*{type}">
-        <option th:each="cheeseType : ${cheeseTypes}" th:text="${cheeseType.name}" th:value="${cheeseType}" th:selected="${cheeseType}"></option>
-      </select>
-    </div>
+    <label th:for="type">Type</label>
+    <select name="categoryId">
+      <option th:each="category : ${categories}"
+              th:text="${category.name}"
+              th:value="${category.id}"></option>
+    </select>
     <input type='submit' value='Edit Cheese'/>
   </form>
 </body>

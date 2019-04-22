@@ -13,7 +13,7 @@
       <td>Description</td>
     </tr>
     <tr th:each="cheese : ${cheeses}">
-      <td><input type="checkbox" name="cheeseIDs" th:value="${cheese.cheeseID}" th:id="${cheese.cheeseID}"/></td>
+      <td><input type="checkbox" name="cheeseIDs" th:value="${cheese.id}" th:id="${cheese.id}"/></td>
       <td th:text="${cheese.name}"></td>
       <td th:text="${cheese.description}"></td>
    </tr>

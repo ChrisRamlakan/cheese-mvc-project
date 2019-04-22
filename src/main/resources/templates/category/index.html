@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body class="container">
+<th:block th:replace="fragments :: navigation"></th:block>
+<p th:unless="${categories.size()}">No Categories</p>
+<ul>
+  <li th:each="category : ${categories}" th:text="${category.name}"></li>
+</ul>
+</body>
+</html>
+

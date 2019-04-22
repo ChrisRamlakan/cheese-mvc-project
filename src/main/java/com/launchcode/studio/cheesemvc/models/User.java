@@ -2,14 +2,19 @@ package com.launchcode.studio.cheesemvc.models;
 
 import org.hibernate.validator.constraints.Email;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
+@Entity
+@Table(name="users")
 public class User {
-  private static int nextID=0;
+  //private static int nextID=0;
 
-  private int userID;
+  @Id
+  @GeneratedValue
+  private long id;
 
   @NotNull
   @Size(min=5, max =15, message = "Username must be between 5 and 15 characters long")
@@ -18,6 +23,7 @@ public class User {
   private String password;
 
   @NotNull(message = "The passwords do not match")
+  @Transient
   private String verifyPassword;
   
   @Email
@@ -25,7 +31,6 @@ public class User {
   private Date joinDate;
 
   public User(){
-  this.userID= ++nextID;
   this.joinDate = new Date();
   }
 
@@ -45,12 +50,12 @@ public class User {
     }
   }
 
-  public int getUserID() {
-    return userID;
+  public long getId() {
+    return id;
   }
 
-  public void setUserID(int userID) {
-    this.userID = userID;
+  public void setId(long id) {
+    this.id = id;
   }
 
   public String getUsername() {
@@ -67,6 +72,7 @@ public class User {
 
   public void setPassword(String password) {
     this.password = password;
+    //this is not required if the form is processed in order.
     checkPassword();
   }
 

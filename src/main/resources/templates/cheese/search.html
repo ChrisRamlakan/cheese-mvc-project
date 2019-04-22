@@ -6,16 +6,11 @@
 <body class="container">
   <h1 th:text="${title}">Default Title</h1>
   <nav th:replace="fragments :: navigation"></nav>
-  <div>
-    <label></label>
-  </div>
   <form action='/cheese/search/category' method='post' style="max-width:600px">
-<!--    <div class="form-group" th:replace="cheese/add :: category-options">-->
-<!--    </div>-->
-    <div class="form-group" th:fragment="category-options" th:object="${cheese}">
-      <label th:for="type">Type</label>
+    <div class="form-group">
       <select th:field="*{type}">
-        <option th:each="cheeseType : ${cheeseTypes}" th:text="${cheeseType.name}" th:value="${cheeseType}"></option>
+        <th:block th:fragment="category-options">
+        </th:block>
       </select>
     </div>
     <input type='submit' value='Search'/>

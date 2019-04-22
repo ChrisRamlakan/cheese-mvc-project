@@ -2,6 +2,8 @@ package com.launchcode.studio.cheesemvc.controllers;
 
 import com.launchcode.studio.cheesemvc.models.User;
 import com.launchcode.studio.cheesemvc.models.UserManager;
+import com.launchcode.studio.cheesemvc.models.data.UserDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,8 @@ import javax.validation.Valid;
 @Controller
 @RequestMapping("user")
 public class UserController {
+  @Autowired
+  private UserDAO userDAO;
 
   //Request Path: GET /user/add
   @RequestMapping(value="add", method = RequestMethod.GET)
@@ -21,12 +25,13 @@ public class UserController {
   }
 
   @RequestMapping(value="detail/{userID}", method = RequestMethod.GET)
-  public String details(Model model, @PathVariable int userID){
-    User user = UserManager.getUserByID(userID);
+  public String details(Model model, @PathVariable long userID){
+    User user = userDAO.findOne(userID);
+    //User user = UserManager.getUserByID(userID);
     //Cheese cheeseToEdit = CheeseData.getByID(cheeseID);
     if(user == null) {
       model.addAttribute("title", "User List");
-      model.addAttribute("userList", UserManager.getAll());
+      model.addAttribute("userList", userDAO.findAll());
       return "user/index";
     }
     model.addAttribute("title","User Details");
@@ -46,10 +51,11 @@ public class UserController {
         return "user/add";
       }
     }
-    UserManager.addUser(user);
+    userDAO.save(user);
+    //UserManager.addUser(user);
     model.addAttribute("title", "User List");
     model.addAttribute("user", user);
-    model.addAttribute("userList", UserManager.getAll());
+    model.addAttribute("userList", userDAO.findAll());
     return "user/index";
   }
 }
