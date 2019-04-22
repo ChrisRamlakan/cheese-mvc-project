@@ -3,7 +3,8 @@
 <head th:replace="fragments :: head"></head>
 <body class="container">
   <h1 th:text="${title}">Default Title</h1>
-  <nav th:replace="fragments :: navigation"></nav>
+  <th:block th:replace="fragments :: navigation"></th:block>
+<!--  <nav th:replace="fragments :: navigation"></nav>-->
   <table class ="table" th:fragment="cheese-table">
     <tr>
       <td>Name</td>
@@ -14,11 +15,14 @@
     <tr th:each="cheese : ${cheeses}">
       <td th:text="${cheese.name}"></td>
       <td th:text="${cheese.description}"></td>
-      <td th:text="${cheese.category.name}"></td>
+      <td><a th:href="@{'/category/' +${cheese.category.id}}" th:text="${cheese.category.name}"></a></td>
       <td><a th:href="@{'/cheese/edit/' + ${cheese.id}}">edit</a></td>
     </tr>
   </table>
-    <p th:unless="${cheeses} and ${cheeses.size()}">No cheese</p>
-
+  <p th:unless="${cheeses} and ${cheeses.size()}">No cheese</p>
+  <nav>
+    <a href="/cheese/add">Add</a>
+    <a href="/cheese/remove">Remove</a>
+  </nav>
 </body>
 </html>

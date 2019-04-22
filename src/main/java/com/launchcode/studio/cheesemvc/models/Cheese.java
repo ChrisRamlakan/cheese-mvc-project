@@ -5,6 +5,7 @@ import javax.annotation.Generated;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 @Table(name="cheeses") //Default behavior is the name of the class
@@ -31,6 +32,9 @@ public class Cheese {
   //private CheeseType type;
   @ManyToOne
   private Category category;
+
+  @ManyToMany(mappedBy = "cheeses")
+  private List<Menu> menus;
 
 //  public Cheese(){
 //   this.id= ++nextCheeseID;
@@ -69,14 +73,6 @@ public class Cheese {
   public void setDescription(String description) {
     this.description = description;
   }
-
-//  public CheeseType getType() {
-//    return type;
-//  }
-//
-//  public void setType(CheeseType type) {
-//    this.type = type;
-//  }
 
   public Category getCategory() {
     return category;

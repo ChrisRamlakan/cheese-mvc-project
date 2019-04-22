@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
-import java.util.ArrayList;
 
 
 @Controller
@@ -46,16 +45,20 @@ public class CheeseController {
                            @RequestParam long categoryId,
                            Errors errors){
 
-    //TODO Check
     if(errors.hasErrors()){
       model.addAttribute("title","Add Cheese");
       model.addAttribute("categories", categoryDAO.findAll());
       return "cheese/add";
     }
     Category category = categoryDAO.findOne(categoryId);
+    if (category==null){
+      model.addAttribute("title","Add Cheese");
+      model.addAttribute("categories", categoryDAO.findAll());
+      return "cheese/add";
+    }
+
     newCheese.setCategory(category);
     cheeseDAO.save(newCheese);
-//    CheeseData.addCheese(newCheese);
     return "redirect:";
   }
 
@@ -74,10 +77,6 @@ public class CheeseController {
     }
     else{
       cheeseDAO.deleteMany(cheeseIDs);
-//     for(int cheeseID : cheeseIDs){
-//       cheeseDAO.delete(cheeseID);
-////       CheeseData.removeCheese(cheeseID);
-//     }
     }
     return "redirect:";
   }
@@ -96,49 +95,27 @@ public class CheeseController {
   
   @RequestMapping(value="edit", method = RequestMethod.POST)
   public String processEditForm(Model model,
-                                @RequestParam(name="cheeseID") int cheeseID,
                                 @ModelAttribute @Valid Cheese cheeseToEdit,
                                 Errors errors){
 
     if(errors.hasErrors()){
-      // If the field with errors is name or description, set the initial value of
-      //  the re-rendered form to the last known good value
-      if (errors.hasFieldErrors("name")){
-        cheeseToEdit.setName(cheeseDAO.findOne(cheeseID).getName());
-//        cheeseToEdit.setName(CheeseData.getByID(cheeseID).getName());
-      }
-      if (errors.hasFieldErrors("description")){
-        cheeseToEdit.setName(cheeseDAO.findOne(cheeseID).getDescription());
-
-//        cheeseToEdit.setDescription(CheeseData.getByID(cheeseID).getDescription());
-      }
       model.addAttribute("cheese", cheeseToEdit);
       model.addAttribute("title"," Edit Cheeses");
       model.addAttribute("categories", categoryDAO.findAll());
       return "cheese/edit";
     }
-    Cheese cheeseToUpdate = cheeseDAO.findOne(cheeseID);
+    System.out.println(cheeseToEdit.getId());
+    Cheese cheeseToUpdate = cheeseDAO.findOne(cheeseToEdit.getId());
+    if (cheeseToUpdate==null){
+      model.addAttribute("cheese", cheeseToEdit);
+      model.addAttribute("title"," Edit Cheeses");
+      model.addAttribute("categories", categoryDAO.findAll());
+      return "cheese/edit";
+    }
     cheeseToUpdate.setName(cheeseToEdit.getName());
     cheeseToUpdate.setDescription(cheeseToEdit.getDescription());
-    //cheeseToUpdate.setType(cheeseToEdit.getType());
-    //CheeseData.updateCheese(cheeseID, , , );
+    cheeseDAO.save(cheeseToUpdate);
+    System.out.println(cheeseToUpdate.getDescription());
     return "redirect:";
   }
-
-//  @RequestMapping(value="search/category", method = RequestMethod.GET)
-//  public String displayCategorySearchForm(Model model){
-//    model.addAttribute("title", "Search By Category");
-//    model.addAttribute("cheeseTypes", CheeseType.values());
-//    return "/cheese/search";
-//  }
-//
-//  @RequestMapping(value="search/category", method = RequestMethod.POST)
-//  public String categorySearchFormHandler(Model model,
-//                                          @ModelAttribute CheeseType type){
-//    model.addAttribute("cheeses", CheeseData.getCheeseByCategory(type));
-//    model.addAttribute("title", "Search By Category");
-//    model.addAttribute("cheeseTypes", CheeseType.values());
-//    return "/cheese/search";
-//
-//  }
 }

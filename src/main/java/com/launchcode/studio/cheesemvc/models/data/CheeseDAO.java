@@ -5,6 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -15,4 +16,6 @@ public interface CheeseDAO extends CrudRepository<Cheese, Integer> {
       this.delete(cheeseID);
     }
   }
+
+  List<Cheese> findByCategoryId(long categoryID);
 }
