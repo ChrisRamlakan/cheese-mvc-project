@@ -25,26 +25,11 @@ public class Cheese {
   @Size(min=1, message="Description must not be empty")
   private String description;
 
-//  @NotNull
-//  @Size(min=1, max=5, message = "Rating must be between 1 and 5")
-//  private int rating;
-
-  //private CheeseType type;
   @ManyToOne
   private Category category;
 
   @ManyToMany(mappedBy = "cheeses")
   private List<Menu> menus;
-
-//  public Cheese(){
-//   this.id= ++nextCheeseID;
-//  }
-
-//  public Cheese(String name, String description){
-//    this();
-//    this.name = name;
-//    this.description = description;
-//  }
 
   public int getCheeseID() {
     return id;

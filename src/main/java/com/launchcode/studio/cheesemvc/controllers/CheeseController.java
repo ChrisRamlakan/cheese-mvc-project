@@ -51,11 +51,6 @@ public class CheeseController {
       return "cheese/add";
     }
     Category category = categoryDAO.findOne(categoryId);
-    if (category==null){
-      model.addAttribute("title","Add Cheese");
-      model.addAttribute("categories", categoryDAO.findAll());
-      return "cheese/add";
-    }
 
     newCheese.setCategory(category);
     cheeseDAO.save(newCheese);

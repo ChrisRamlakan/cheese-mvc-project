@@ -1,6 +1,5 @@
 package com.launchcode.studio.cheesemvc.models;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
